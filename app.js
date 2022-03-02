@@ -3,6 +3,10 @@
 const express = require('express')
 // 引入cors，解决跨域
 const cors = require('cors')
+//导入path模块，处理路径
+const path=require('path') 
+
+
 // 引入路由 注册登录
 const userRouter = require('./router/user')
 // 引入路由 用户信息
@@ -13,12 +17,16 @@ const memberRouter = require('./router/member')
 const systemRouter = require('./router/systeminfo')
 // 导入系统信息，需要token
 const systemRouterToken = require('./router/systeminfo_token')
+// 导入签到模块
+const signRouter = require('./router/sign')
+
 // 导入@hapi/joi
 const joi = require('joi')
 // 导入配置文件
 const config = require('./config')
 // 导入解析token的中间件
 const exprssJWT = require('express-jwt')
+const { required } = require('joi')
 
 // 创建实例
 const app = express()
@@ -41,12 +49,14 @@ app.use(function (req, res, next) {
 app.use(cors())
 // ，配置解析 application/x-www-form-urlencoded 格式的表单数据的中间件
 app.use(express.urlencoded({ extended: false }))
+// 静态文件
+app.use("/static",express.static(path.join(__dirname,"/imgs")))
 
 
 // 制定不需要的token接口
 app.use(exprssJWT({
     secret: config.jwtSecretKey
-}).unless({ path: [/^\/api\//] })
+}).unless({ path: [/^\/api\//,/^\/static\//] })
 )
 
 // 捕获错误的中间件
@@ -71,6 +81,8 @@ app.use('/my', memberRouter)
 app.use('/my', userinfoRouter) 
 // 系统信息模块，需要token
 app.use('/my',systemRouterToken)
+// 签到模块
+app.use('/my',signRouter)
 
 app.listen(3007, function () {
     console.log('api server running at http://127.0.0.1:3007')

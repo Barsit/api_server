@@ -2,11 +2,15 @@
 const db = require('../db/index')
 // 导入bcrypt,密码加密
 const bcrypt = require('bcryptjs')
+// 导入path模块，处理文件路径
+const path =require('path')
+// 文件处理模块
+const fs=require('fs')
 
 // 获取用户信息的函数
 exports.getUserInfo = (req, res) => {
     // 根据用户id进行查询
-    const sql = `select id, username, nickname, email, user_pic from ev_users where id=?`
+    const sql = `select id, username, nickname, email,roles, user_pic from ev_users where id=?`
     db.query(sql, [req.user.id], (err, results) => {
         // sql语句失败
         if (err) return res.cc(err)
@@ -24,7 +28,7 @@ exports.getUserInfo = (req, res) => {
 // 修改用户的基本信息
 exports.updateUserInfo = (req, res) => {
     // 修改用户信息的sql语句
-    const sql = `update ev_users set  where id=?`
+    const sql = `update ev_users set ? where id=?`
 
     db.query(sql, [req.body, req.body.id], (err, results) => {
         // sql执行失败
@@ -67,17 +71,41 @@ exports.updatePassword = (req, res) => {
 
 // 修改头像的处理函数
 exports.updateAvatar = (req, res) => {
-    // 更新用户头像的sql
-    const sql = `update ev_users set user_pic=? where id=?`
-    db.query(sql, [req.body.avatar, req.user.id], (err, results) => {
-        // sql失败
-        if (err) return res.cc(err)
-        // sql成功,影响结果不为1
-        if (results.affectedRows !== 1) return res.cc('修改头像失败')
-        res.cc('修改头像成功', 0)
-
+    //获取后缀名
+    console.log(req.file)
+    const extname = path.extname(req.file.originalname)
+    // 文件类型判断
+    if(req.file.size>0 && req.file.size<=2097152 && (extname==='.jpg' ||extname==='.png'||extname==='.bmp'||extname==='.gif'||extname==='.jpeg')){
+    //获取上传成功之后的文件路径
+    const filepath = req.file.path
+    //上传之后文件的名称
+    const filename = req.file.filename + extname
+    const newfilename = path.join(path.dirname(filepath), filename)
+    const imgUrl = "http://120.25.202.230:3007/static/" + filename
+    //重命名，借用fs的rename重命名的方法，第一参数是源文件地址路径，第二个参数是将源文件改名后的地址(和参数一地址相同，只不过名字变了而已，两个参数都是地址)
+    fs.rename(filepath, newfilename, err => {
+        if (err) return res.send(err)
+        else {
+            // 更新用户头像url的sql
+            const sql = `update ev_users set user_pic=? where id=?`
+            db.query(sql, [imgUrl, req.user.id], (err, results) => {
+                // sql失败
+                if (err) return res.cc(err)
+                // sql成功,影响结果不为1
+                if (results.affectedRows !== 1) return res.cc('修改头像失败')
+                res.send({
+                    status: 0,
+                    message: "修改头像成功",
+                    imgUrl
+                })
+            })
+        }
     })
+    }
+    else return res.cc('修改头像失败，图片类型不符合要求')
 }
+
+
 // 修改权限的处理函数
 exports.updateRole = (req, res) => {
     // 验证操作者权限

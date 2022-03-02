@@ -3,11 +3,11 @@ const { ref } = require('joi')
 const joi = require('joi')
 
 // 用户名校验规则
-const username = joi.string().alphanum().min(1).max(10)
+const username = joi.string().alphanum().min(1).max(10).required()
 // 密码检验规则
-const password = joi.string().pattern(/^[\S]{6,12}$/)
+const password = joi.string().pattern(/^[\S]{6,12}$/).required()
 // id效验规则
-const id =joi.number().min(1).required().integer().required()
+const id =joi.number().min(1).integer().required()
 //  nickname效验规则
 const nickname = joi.string()
 // email效验规则

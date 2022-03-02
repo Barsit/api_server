@@ -1,11 +1,18 @@
 // 导入数据库操作模块
 const db = require('../db/index')
 
-// 获取所有成员函数
+// 获取所有成员信息函数
 exports.getAllMember=(req,res)=>{
 //    获取所有成员sql
-const sql = `select id,nickname,email,elab_group,grade,elab_position,excellence,phone,major from ev_users where delete_mark=0`
-db.query(sql,(err,results)=>{
+let sql
+if(req.params.group==='all')
+{
+    sql=`select id,nickname,email,elab_group,grade,elab_position,excellence,phone,major,photo from ev_users where delete_mark=0`
+}
+else{
+    sql= `select id,nickname,email,elab_group,grade,elab_position,excellence,phone,major,photo from ev_users where delete_mark=0 and elab_group=?`
+}
+db.query(sql,[req.params.group],(err,results)=>{
     // sql失败
     if(err) return res.cc('获取所有成员信息失败')
     // sql成功
@@ -20,13 +27,13 @@ db.query(sql,(err,results)=>{
 // 根据id获取单个成员信息
 exports.getOneMember = (req,res)=>{
     // 根据id查找成员sql
-    const sql = `select id,nickname,email,elab_group,grade,elab_position,excellence,phone,major from ev_users where id=? and delete_mark=0`
+    const sql = `select id,nickname,email,elab_group,grade,elab_position,excellence,phone,major,photo from ev_users where id=? and delete_mark=0`
     db.query(sql,[req.params.id],(err,results)=>{
         // sql失败
-        if(err) return res.cc('获取成员信息失败1')
+        if(err) return res.cc('获取成员信息失败')
         // sql成功，查询结果不为1
         console.log(results)
-        if(results.length!==1) return res.cc('获取成员信息失败2')
+        if(results.length!==1) return res.cc('获取成员信息失败')
         // 响应查询结果
         res.send({
             status:0,

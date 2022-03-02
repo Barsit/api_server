@@ -43,10 +43,10 @@ exports.regUser = (req, res) => {
             // sql语句成功，但影响行为不为1
             if (results.affectedRows !== 1) return res.send({
                 status: 1,
-                message: '注册用户失败，请稍后重试'
+                message: '注册用户失败，请重试'
             })
             // 注册成功
-            res.send('注册成功')
+            res.cc('注册成功',0)
         })
     })
 }

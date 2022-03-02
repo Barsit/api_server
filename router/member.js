@@ -11,7 +11,7 @@ const  expressJoi = require('@escook/express-joi')
 const {id_params_schema,position_body_schema} = require('../schema/user')
 
 // 获取所有成员
-router.get('/allmem',member_handler.getAllMember)
+router.get('/allmem/:group',member_handler.getAllMember)
 // 根据id获取单个成员
 router.get('/onemem/:id',expressJoi(id_params_schema),member_handler.getOneMember)
 // 根据id删除成员
