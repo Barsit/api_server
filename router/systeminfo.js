@@ -11,7 +11,7 @@ const system_handler = require('../router_handler/systeminfo')
 // const {id_params_schema} = require('../schema/user')
 
 // 获取系统信息
-router.get('/systeminfo',system_handler.getSystemInfo)
+router.get('/systeminfo', system_handler.getSystemInfo)
 
 // 修改系统信息
 

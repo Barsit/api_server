@@ -18,7 +18,7 @@ router.get('/sign/record', userHandler.signRecord)
 // 获取全部记录或某个成员记录
 router.get('/sign/record/:user_id', userHandler.signUserRecord)
 // 删除 恢复某条记录
-router.get('/sign/delete/:id',userHandler.signDeleteRecord)
+router.get('/sign/delete/:id', userHandler.signDeleteRecord)
 
 
 

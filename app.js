@@ -4,7 +4,7 @@ const express = require('express')
 // 引入cors，解决跨域
 const cors = require('cors')
 //导入path模块，处理路径
-const path=require('path') 
+const path = require('path')
 
 
 // 引入路由 注册登录
@@ -50,13 +50,13 @@ app.use(cors())
 // ，配置解析 application/x-www-form-urlencoded 格式的表单数据的中间件
 app.use(express.urlencoded({ extended: false }))
 // 静态文件
-app.use("/static",express.static(path.join(__dirname,"/imgs")))
+app.use("/static", express.static(path.join(__dirname, "/imgs")))
 
 
 // 制定不需要的token接口
 app.use(exprssJWT({
     secret: config.jwtSecretKey
-}).unless({ path: [/^\/api\//,/^\/static\//] })
+}).unless({ path: [/^\/api\//, /^\/static\//] })
 )
 
 // 捕获错误的中间件
@@ -72,17 +72,17 @@ app.use(function (err, req, res, next) {
 // 注册登录路由模块
 app.use('/api', userRouter)
 // 系统信息模块
-app.use('/api',systemRouter)
+app.use('/api', systemRouter)
 
 // /my开头的接口需要进行token验证
 // 成员信息路由模块
 app.use('/my', memberRouter)
 // 个人信息路由模块
-app.use('/my', userinfoRouter) 
+app.use('/my', userinfoRouter)
 // 系统信息模块，需要token
-app.use('/my',systemRouterToken)
+app.use('/my', systemRouterToken)
 // 签到模块
-app.use('/my',signRouter)
+app.use('/my', signRouter)
 
 app.listen(3007, function () {
     console.log('api server running at http://127.0.0.1:3007')

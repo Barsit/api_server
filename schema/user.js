@@ -7,13 +7,13 @@ const username = joi.string().alphanum().min(1).max(10).required()
 // 密码检验规则
 const password = joi.string().pattern(/^[\S]{6,12}$/).required()
 // id效验规则
-const id =joi.number().min(1).integer().required()
+const id = joi.number().min(1).integer().required()
 //  nickname效验规则
 const nickname = joi.string()
 // email效验规则
 const email = joi.string().email()
 // elab_group效验规则
-const elab_group =joi.string()
+const elab_group = joi.string()
 // grade效验规则
 const grade = joi.string()
 // elab_position效验规则 
@@ -44,14 +44,14 @@ const other = joi.string()
 // 导出注册登录的表单验证规则对象
 exports.reg_login_schema = {
     // 对req.body中的数据进行验证
-    body:{
+    body: {
         username,
         password
     }
 }
 // 导出修改用户信息的表单验证规则对象
-exports.update_userinfo_schema ={
-    body:{
+exports.update_userinfo_schema = {
+    body: {
         id,
         nickname,
         email,
@@ -65,35 +65,35 @@ exports.update_userinfo_schema ={
     }
 }
 // 导出新旧密码的验证规则：新旧密码不一致
-exports.update_password_schema ={
-    body:{
-        oldpwd:password,
-        newpwd:joi.not(joi.ref('oldpwd')).concat(password)
+exports.update_password_schema = {
+    body: {
+        oldpwd: password,
+        newpwd: joi.not(joi.ref('oldpwd')).concat(password)
     }
 }
 // 导出头像验证规则
-exports.update_avatar_schema={
-    body:{
-        avatar:joi.string().required()
-        
+exports.update_avatar_schema = {
+    body: {
+        avatar: joi.string().required()
+
     }
 }
 // 导出用户权限验证规则
-exports.update_role_schema={
-    body:{
+exports.update_role_schema = {
+    body: {
         id,
         roles
     }
 }
 // 导出id验证规则
-exports.id_params_schema={
-    params:{
+exports.id_params_schema = {
+    params: {
         id,
     }
 }
 // 导出修改职位验证规则
-exports.position_body_schema={
-    body:{
+exports.position_body_schema = {
+    body: {
         id,
         elab_position,
         roles
@@ -101,7 +101,7 @@ exports.position_body_schema={
 }
 // 导出添加信息信息验证规则
 exports.add_systeminfo_schema = {
-    body:{
+    body: {
         item_name,
         item_describe,
         logo,
@@ -111,7 +111,7 @@ exports.add_systeminfo_schema = {
 }
 // 导出修改系统信息验证规则
 exports.update_systeminfo_schema = {
-    body:{
+    body: {
         id,
         item_name,
         item_describe,

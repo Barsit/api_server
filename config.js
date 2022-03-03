@@ -3,6 +3,6 @@
 const token = require('jsonwebtoken')
 
 // 加密、解密字符串
-module.exports={
-    jwtSecretKey:'babysite'
+module.exports = {
+    jwtSecretKey: 'babysite'
 }

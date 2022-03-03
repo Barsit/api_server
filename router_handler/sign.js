@@ -21,7 +21,7 @@ exports.signIn = (req, res) => {
         // 允许签到
         const sql2 = `insert into ev_times set ?`
         // 签到时间格式转换
-        req.body.signin_time=dayjs(req.body.signin_time).format('YYYY-MM-DD HH:mm')
+        req.body.signin_time = dayjs(req.body.signin_time).format('YYYY-MM-DD HH:mm')
         // 添加登录用户的id
         req.body.user_id = req.user.id
         // 添加登录用户名字
@@ -58,7 +58,7 @@ exports.signOut = (req, res) => {
         // 签退
         const date1 = dayjs(req.body.signout_time) //签退时间
         // 签退时间格式转换
-        req.body.signout_time=dayjs(req.body.signout_time).format('YYYY-MM-DD HH:mm')
+        req.body.signout_time = dayjs(req.body.signout_time).format('YYYY-MM-DD HH:mm')
         operate_total = date1.diff(results[0].signin_time, 'minute')        //签退时间与签到时间时间差
         const sql2 = `update ev_times set signout_mark=1,operate_total=?,signout_time=? where id=?`
         db.query(sql2, [operate_total, req.body.signout_time, req.body.id], (err, results) => {
@@ -159,14 +159,14 @@ exports.signDeleteRecord = (req, res) => {
             if (err) return res.cc(err)
             // sql成功，查询结果不为1
             if (results.length !== 1) return res.cc('操作用户的记录失败4')
-            const valid_mark =!results[0].valid_mark
+            const valid_mark = !results[0].valid_mark
             const sql3 = `update ev_times set valid_mark=? where id=? `
-            db.query(sql3,[valid_mark,req.params.id],(err,results)=>{
+            db.query(sql3, [valid_mark, req.params.id], (err, results) => {
                 // sql失败
-            if (err) return res.cc(err)
-            // sql成功，查询结果不为1
-            if (results.affectedRows !== 1) return res.cc('操作用户的记录失败5')
-            res.cc('操作用户的记录成功',0)
+                if (err) return res.cc(err)
+                // sql成功，查询结果不为1
+                if (results.affectedRows !== 1) return res.cc('操作用户的记录失败5')
+                res.cc('操作用户的记录成功', 0)
             })
         })
     })

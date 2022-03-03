@@ -46,7 +46,7 @@ exports.regUser = (req, res) => {
                 message: '注册用户失败，请重试'
             })
             // 注册成功
-            res.cc('注册成功',0)
+            res.cc('注册成功', 0)
         })
     })
 }
@@ -56,30 +56,30 @@ exports.login = (req, res) => {
     const userInfo = req.body
     // sql语句
     const sql = 'select * from ev_users where username=?'
-   
 
-    db.query(sql,[userInfo.username], function (err, results) {
+
+    db.query(sql, [userInfo.username], function (err, results) {
         // sql语句失败
         if (err) return res.cc(err)
         // 用户不存在
-        if (results.length===0) return res.cc('登录失败，用户不存在')
+        if (results.length === 0) return res.cc('登录失败，用户不存在')
         // sql成功，但查询到的数据不为1
-        if (results.length!==1) return res.cc('登录失败')
-        
+        if (results.length !== 1) return res.cc('登录失败')
+
         // 输入密码与加密密码比较
-        const compareResult = bcrypt.compareSync(userInfo.password,results[0].password)
-        if(!compareResult) return res.cc('登录失败，密码错误')
+        const compareResult = bcrypt.compareSync(userInfo.password, results[0].password)
+        if (!compareResult) return res.cc('登录失败，密码错误')
 
         // 剔除密码和头像
-        const user = {...results[0],password:'',user_pic:''}
+        const user = { ...results[0], password: '', user_pic: '' }
         // 生成token字符串
-        const tokenStr = jwt.sign(user,config.jwtSecretKey,{
-            expiresIn:'10h', //有效期为10小时 
+        const tokenStr = jwt.sign(user, config.jwtSecretKey, {
+            expiresIn: '10h', //有效期为10小时 
         })
         res.send({
-            status:0,
-            token:'Bearer ' + tokenStr,
+            status: 0,
+            token: 'Bearer ' + tokenStr,
         })
 
-      })
+    })
 }
