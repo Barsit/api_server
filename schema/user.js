@@ -38,7 +38,24 @@ const logo = joi.string()
 const picture = joi.string()
 // 其他信息验证规则
 const other = joi.string()
-
+// 签到时间 日期 必须
+const signin_time = joi.date().required()
+const signin_time2 = joi.date() //非必选
+// 纬度 
+// const longitude = joi.number().required()
+const longitude = joi.number().min(38.885529).max(38.885717).required()
+// 经度
+// const latitude = joi.number().required()
+const latitude = joi.number().min(121.527802).max(121.528521).required()
+// 签退时间
+const signout_time = joi.date().required()
+const signout_time2 = joi.date() //非必选
+// 时长查询
+const time = joi.date().required()
+// 获取全部记录或某个成员记录 0:全部
+const user_id = joi.number().integer().min(0).required()
+// 修改签到时长
+const operate_total = joi.number().min(0).integer()
 
 
 // 导出注册登录的表单验证规则对象
@@ -118,5 +135,47 @@ exports.update_systeminfo_schema = {
         logo,
         picture,
         other
+    }
+}
+// 导出签到参数验证规则
+exports.sign_in_schema = {
+    body:{
+        signin_time,
+        longitude,
+        latitude
+    }
+}
+// 导出签退参数验证规则
+exports.sign_out_schema = {
+    body:{
+        id,
+        signout_time
+    }
+}
+// 导出签到时长查询参数验证规则
+exports.sign_time_schema = {
+    body:{
+        time
+    }
+}
+// 导出签到信息验证规则
+exports.sign_record_schema = {
+    params:{
+        user_id
+    }
+}
+// 导出删除恢复记录验证规则
+exports.sign_delete_schema = {
+    params:{
+        id
+    }
+}
+// 导出修改记录验证规则
+exports.sign_update_schema = {
+    body:{
+        id,
+        signin_time2,
+        signout_time2,
+        operate_total
     }
 }

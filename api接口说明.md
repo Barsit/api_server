@@ -1183,3 +1183,116 @@ Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbW
 | :------ | :----- | ------------------------------ |
 | status  | int    | 请求是否成功，0：成功；1：失败 |
 | message | string | 请求结果的描述消息             |
+
+## 获取已删除记录
+
+**简要描述：**
+
+- 获取已删除记录
+
+- 需要管理员权限
+
+
+**请求URL：**
+
+- `/my/sign/delete/record/:user_id`
+
+**请求方式：**
+
+- POST
+
+**Header：**
+
+```
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsInBhc3N3b3JkIjoiIiwibmlja25hbWUiOiLms6Xlt7Tlt7QiLCJlbWFpbCI6Im5pYmFiYUBpdGNhc3QuY24iLCJ1c2VyX3BpYyI6IiIsImlhdCI6MTU3ODAzNjY4MiwiZXhwIjoxNTc4MDcyNjgyfQ.Mwq7GqCxJPK-EA8LNrtMG04llKdZ33S9KBL3XeuBxuI
+```
+
+**请求体：**
+
+| 参数名  | 必选 | 类型                                                         | 说明 |
+| :------ | :--- | :----------------------------------------------------------- | ---- |
+| user_id | 是   | int用户id，不为0时获取指定用户的全部记录，为0时获取所有用户全部记录 |      |
+
+**返回示例**
+
+```
+{
+    "status": 0,
+    "message": "获取用户的删除记录成功",
+    "data": [
+        {
+            "id": 27,
+            "user_id": 6,
+            "nickname": "王五",
+            "signin_time": "2022-02-28T22:24:00.000Z",
+            "signout_time": "2022-03-01T20:24:00.000Z",
+            "longitude": 38.8857,
+            "latitude": 121.528,
+            "operate_total": 1320
+        }
+    ]
+}
+```
+
+**返回参数说明**
+
+| 参数名                        | 类型   | 说明                           |
+| :---------------------------- | :----- | ------------------------------ |
+| status                        | int    | 请求是否成功，0：成功；1：失败 |
+| message                       | string | 请求结果的描述消息             |
+| data                          | arr    | 返回信息                       |
+| + id                          | int    | 签到成功id                     |
+| + user_id                     | int    | 用户id                         |
+| + nickname                    | string | 用户姓名                       |
+| + GROUP_CONCAT(signin_time)   | string | 签到时间                       |
+| + GROUP_CONCAT(signout_time)  | string | 签退时间                       |
+| + GROUP_CONCAT(longitude)     | string | 纬度                           |
+| + GROUP_CONCAT(latitude)      | string | 经度                           |
+| + GROUP_CONCAT(operate_total) | string | 单次时长                       |
+
+## 修改签到记录
+
+**简要描述：**
+
+- 修改签到接口
+- 需要管理员权限
+- 已被删除的记录需要先恢复才可以修改
+
+**请求URL：**
+
+- `/my/sign/update`
+
+**请求方式：**
+
+- POST
+
+**Header：**
+
+```
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsInBhc3N3b3JkIjoiIiwibmlja25hbWUiOiLms6Xlt7Tlt7QiLCJlbWFpbCI6Im5pYmFiYUBpdGNhc3QuY24iLCJ1c2VyX3BpYyI6IiIsImlhdCI6MTU3ODAzNjY4MiwiZXhwIjoxNTc4MDcyNjgyfQ.Mwq7GqCxJPK-EA8LNrtMG04llKdZ33S9KBL3XeuBxuI
+```
+
+**请求体：**
+
+| 参数名        | 必选 | 类型   | 说明                                 |
+| :------------ | :--- | :----- | ------------------------------------ |
+| id            | 是   | int    | 签到时返回的id                       |
+| signin_time   | 否   | string | 签到时间，后三个参数必须提供其中一个 |
+| signout_time  | 否   | string | 签退时间，后三个参数必须提供其中一个 |
+| operate_total | 否   | string | 单次时长，后三个参数必须提供其中一个 |
+
+**返回示例**
+
+```
+{
+    "status": 0,
+    "message": "修改用户的记录成功"
+}
+```
+
+**返回参数说明**
+
+| 参数名  | 类型   | 说明                           |
+| :------ | :----- | ------------------------------ |
+| status  | int    | 请求是否成功，0：成功；1：失败 |
+| message | string | 请求结果的描述消息             |
