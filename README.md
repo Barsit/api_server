@@ -4,7 +4,7 @@
 ## 项目文件
 
 ```
-C:.
+api_server:.
 │  api接口说明.md
 │  app.js  //入口文件
 │  config.js  //配置文件
