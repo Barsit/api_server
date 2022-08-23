@@ -23,19 +23,21 @@ api_server:.
 │      20ab6ebad52a8984bdba4c2410ea769e.jpg
 │
 ├─router //配置路由
-│      member.js
-│      sign.js
-│      systeminfo.js
-│      systeminfo_token.js
-│      user.js
-│      userinfo.js
+│      member.js       //成员模块
+│      sign.js         //签到模块
+│      systeminfo.js   //系统信息
+│      systeminfo_token.js //系统信息
+│      user.js         //注册登录
+│      userinfo.js     //用户信息
+|      Verification.js  //验证码
 │
-├─router_handler  //路由处理函数
+├─router_handler  //路由处理函数（同上）
 │      member.js
 │      sign.js
 │      systeminfo.js
 │      user.js
 │      userinfo.js
+|      Verification.js
 │
 └─schema  //请求参数校验
         user.js
